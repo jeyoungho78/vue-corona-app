@@ -1,27 +1,23 @@
 <template>
   <el-row class="tac">
     <el-col>
-      <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-      >
-        <el-sub-menu index="1">
+      <el-menu :collapse="isCollapse">
+        <el-sub-menu
+          v-for="menu in menuItem"
+          :key="menu.index"
+          :index="menu.index"
+        >
           <template #title>
-            <el-icon><location /></el-icon>
-            <span>Navigator One</span>
+            <el-icon><component :is="menu.icon" /></el-icon>
+            <span>{{ menu.label }}</span>
           </template>
-          <el-menu-item index="1-1">item one</el-menu-item>
-          <el-menu-item index="1-2">item two</el-menu-item>
-        </el-sub-menu>
-        <el-sub-menu index="1">
-          <template #title>
-            <el-icon><setting /></el-icon>
-            <span>Navigator Two</span>
-          </template>
-          <el-menu-item index="1-1">item one</el-menu-item>
-          <el-menu-item index="1-2">item two</el-menu-item>
+
+          <el-menu-item
+            v-for="item in menu.submenus"
+            :key="item.index"
+            :index="item.index"
+            >{{ item.label }}</el-menu-item
+          >
         </el-sub-menu>
       </el-menu>
     </el-col>
@@ -35,6 +31,9 @@ import { reactive, toRefs } from "vue";
 export default {
   name: "SideMenu",
   components: { Location, Setting },
+  props: {
+    isCollapse: Boolean,
+  },
   setup() {
     const state = reactive({
       menuItem: [
